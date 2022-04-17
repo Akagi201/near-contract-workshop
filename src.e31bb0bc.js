@@ -224,7 +224,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
  */
 'use strict';
 
-if ("development" !== "production") {
+if ("testnet" !== "production") {
   (function () {
     'use strict';
 
@@ -258,8 +258,8 @@ if ("development" !== "production") {
     var REACT_OFFSCREEN_TYPE = 0xeae2;
     var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
 
-    if (typeof Symbol === 'function' && Symbol.for) {
-      var symbolFor = Symbol.for;
+    if (typeof Symbol === 'function' && Symbol["for"]) {
+      var symbolFor = Symbol["for"];
       REACT_ELEMENT_TYPE = symbolFor('react.element');
       REACT_PORTAL_TYPE = symbolFor('react.portal');
       exports.Fragment = symbolFor('react.fragment');
@@ -1470,7 +1470,7 @@ if ("development" !== "production") {
         pending._result = thenable;
         thenable.then(function (moduleObject) {
           if (payload._status === Pending) {
-            var defaultExport = moduleObject.default;
+            var defaultExport = moduleObject["default"];
             {
               if (defaultExport === undefined) {
                 error('lazy: Expected the result of a dynamic import() call. ' + 'Instead received: %s\n\nYour code should look like: \n  ' + // Break up imports to avoid accidentally parsing them as dependencies.
@@ -2500,7 +2500,7 @@ if ("development" !== "production") {
 },{"object-assign":"../node_modules/object-assign/index.js"}],"../node_modules/react/index.js":[function(require,module,exports) {
 'use strict';
 
-if ("development" === 'production') {
+if ("testnet" === 'production') {
   module.exports = require('./cjs/react.production.min.js');
 } else {
   module.exports = require('./cjs/react.development.js');
@@ -2516,7 +2516,7 @@ if ("development" === 'production') {
  */
 'use strict';
 
-if ("development" !== "production") {
+if ("testnet" !== "production") {
   (function () {
     'use strict';
 
@@ -3145,7 +3145,7 @@ if ("development" !== "production") {
 },{}],"../node_modules/scheduler/index.js":[function(require,module,exports) {
 'use strict';
 
-if ("development" === 'production') {
+if ("testnet" === 'production') {
   module.exports = require('./cjs/scheduler.production.min.js');
 } else {
   module.exports = require('./cjs/scheduler.development.js');
@@ -3161,7 +3161,7 @@ if ("development" === 'production') {
  */
 'use strict';
 
-if ("development" !== "production") {
+if ("testnet" !== "production") {
   (function () {
     'use strict';
 
@@ -3501,7 +3501,7 @@ if ("development" !== "production") {
 },{}],"../node_modules/scheduler/tracing.js":[function(require,module,exports) {
 'use strict';
 
-if ("development" === 'production') {
+if ("testnet" === 'production') {
   module.exports = require('./cjs/scheduler-tracing.production.min.js');
 } else {
   module.exports = require('./cjs/scheduler-tracing.development.js');
@@ -3517,7 +3517,7 @@ if ("development" === 'production') {
  */
 'use strict';
 
-if ("development" !== "production") {
+if ("testnet" !== "production") {
   (function () {
     'use strict';
 
@@ -29537,7 +29537,7 @@ function checkDCE() {
     return;
   }
 
-  if ("development" !== 'production') {
+  if ("testnet" !== 'production') {
     // This branch is unreachable because this function is only called
     // in production, but the condition is true only in development.
     // Therefore if the branch is still here, dead code elimination wasn't
@@ -29558,7 +29558,7 @@ function checkDCE() {
   }
 }
 
-if ("development" === 'production') {
+if ("testnet" === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
@@ -46775,7 +46775,7 @@ __exportStar(require("./browser-connect"), exports);
 require("error-polyfill");
 
 },{"./key_stores/browser-index":"../node_modules/near-api-js/lib/key_stores/browser-index.js","./common-index":"../node_modules/near-api-js/lib/common-index.js","./browser-connect":"../node_modules/near-api-js/lib/browser-connect.js","error-polyfill":"../node_modules/error-polyfill/index.js"}],"config.js":[function(require,module,exports) {
-const CONTRACT_NAME = "dev-1650207163267-65070529522541" || 'guestbook-rs';
+var CONTRACT_NAME = "dev-1650207163267-65070529522541" || 'guestbook.akagi201.testnet';
 
 function getConfig(env) {
   switch (env) {
@@ -46815,7 +46815,7 @@ function getConfig(env) {
       return {
         networkId: 'local',
         nodeUrl: 'http://localhost:3030',
-        keyPath: `${"/Users/akagi201"}/.near/validator_key.json`,
+        keyPath: "".concat("/Users/akagi201", "/.near/validator_key.json"),
         walletUrl: 'http://localhost:4000/wallet',
         contractName: CONTRACT_NAME
       };
@@ -46838,7 +46838,7 @@ function getConfig(env) {
       };
 
     default:
-      throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
+      throw Error("Unconfigured environment '".concat(env, "'. Can be configured in src/config.js."));
   }
 }
 
@@ -46859,27 +46859,57 @@ var _config = _interopRequireDefault(require("./config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const nearConfig = (0, _config.default)("development" || 'development'); // Initialize contract & set global variables
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-async function initContract() {
-  // Initialize connection to the NEAR testnet
-  const near = await (0, _nearApiJs.connect)(Object.assign({
-    deps: {
-      keyStore: new _nearApiJs.keyStores.BrowserLocalStorageKeyStore()
-    }
-  }, nearConfig)); // Initializing Wallet based Account. It can work with NEAR testnet wallet that
-  // is hosted at https://wallet.testnet.near.org
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-  window.walletConnection = new _nearApiJs.WalletConnection(near); // Getting the Account ID. If still unauthorized, it's just empty string
+var nearConfig = (0, _config.default)("testnet" || 'development'); // Initialize contract & set global variables
 
-  window.accountId = window.walletConnection.getAccountId(); // Initializing our contract APIs by contract name and configuration
+function initContract() {
+  return _initContract.apply(this, arguments);
+}
 
-  window.contract = await new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
-    // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['get_greeting'],
-    // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: ['set_greeting']
-  });
+function _initContract() {
+  _initContract = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var near;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _nearApiJs.connect)(Object.assign({
+              deps: {
+                keyStore: new _nearApiJs.keyStores.BrowserLocalStorageKeyStore()
+              }
+            }, nearConfig));
+
+          case 2:
+            near = _context.sent;
+            // Initializing Wallet based Account. It can work with NEAR testnet wallet that
+            // is hosted at https://wallet.testnet.near.org
+            window.walletConnection = new _nearApiJs.WalletConnection(near); // Getting the Account ID. If still unauthorized, it's just empty string
+
+            window.accountId = window.walletConnection.getAccountId(); // Initializing our contract APIs by contract name and configuration
+
+            _context.next = 7;
+            return new _nearApiJs.Contract(window.walletConnection.account(), nearConfig.contractName, {
+              // View methods are read only. They don't modify the state, but usually return some value.
+              viewMethods: ['get_greeting'],
+              // Change methods can modify the state. But you don't receive the returned value when called.
+              changeMethods: ['set_greeting']
+            });
+
+          case 7:
+            window.contract = _context.sent;
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _initContract.apply(this, arguments);
 }
 
 function logout() {
@@ -46987,29 +47017,53 @@ var _config = _interopRequireDefault(require("./config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const {
-  networkId
-} = (0, _config.default)("development" || 'development');
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var _getConfig = (0, _config.default)("testnet" || 'development'),
+    networkId = _getConfig.networkId;
 
 function App() {
   // use React Hooks to store greeting in component state
-  const [greeting, set_greeting] = _react.default.useState(); // when the user has not yet interacted with the form, disable the button
+  var _React$useState = _react.default.useState(),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      greeting = _React$useState2[0],
+      set_greeting = _React$useState2[1]; // when the user has not yet interacted with the form, disable the button
 
 
-  const [buttonDisabled, setButtonDisabled] = _react.default.useState(true); // after submitting the form, we want to show Notification
+  var _React$useState3 = _react.default.useState(true),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      buttonDisabled = _React$useState4[0],
+      setButtonDisabled = _React$useState4[1]; // after submitting the form, we want to show Notification
 
 
-  const [showNotification, setShowNotification] = _react.default.useState(false); // The useEffect hook can be used to fire side-effects during render
+  var _React$useState5 = _react.default.useState(false),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      showNotification = _React$useState6[0],
+      setShowNotification = _React$useState6[1]; // The useEffect hook can be used to fire side-effects during render
   // Learn more: https://reactjs.org/docs/hooks-intro.html
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     // in this case, we only care to query the contract when signed in
     if (window.walletConnection.isSignedIn()) {
       // window.contract is set by initContract in index.js
       window.contract.get_greeting({
         account_id: window.accountId
-      }).then(greetingFromContract => {
+      }).then(function (greetingFromContract) {
         set_greeting(greetingFromContract);
       });
     }
@@ -47036,7 +47090,7 @@ function App() {
     _react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("button", {
       className: "link",
       style: {
-        float: 'right'
+        "float": 'right'
       },
       onClick: _utils.logout
     }, "Sign out"), /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("h1", null, /*#__PURE__*/_react.default.createElement("label", {
@@ -47045,45 +47099,70 @@ function App() {
         color: 'var(--secondary)',
         borderBottom: '2px solid var(--secondary)'
       }
-    }, greeting), ' '
+    }, "Hello ", greeting, "!"), ' '
     /* React trims whitespace around tags; insert literal space character when needed */
-    , window.accountId, "!"), /*#__PURE__*/_react.default.createElement("form", {
-      onSubmit: async event => {
-        event.preventDefault(); // get elements from the form using their id attribute
+    ), /*#__PURE__*/_react.default.createElement("form", {
+      onSubmit: /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+          var _event$target$element, fieldset, greeting, newGreeting;
 
-        const {
-          fieldset,
-          greeting
-        } = event.target.elements; // hold onto new user-entered value from React's SynthenticEvent for use after `await` call
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  event.preventDefault(); // get elements from the form using their id attribute
 
-        const newGreeting = greeting.value; // disable the form while the value gets updated on-chain
+                  _event$target$element = event.target.elements, fieldset = _event$target$element.fieldset, greeting = _event$target$element.greeting; // hold onto new user-entered value from React's SynthenticEvent for use after `await` call
 
-        fieldset.disabled = true;
+                  newGreeting = greeting.value; // disable the form while the value gets updated on-chain
 
-        try {
-          // make an update call to the smart contract
-          await window.contract.set_greeting({
-            // pass the value that the user entered in the greeting field
-            message: newGreeting
-          });
-        } catch (e) {
-          alert('Something went wrong! ' + 'Maybe you need to sign out and back in? ' + 'Check your browser console for more info.');
-          throw e;
-        } finally {
-          // re-enable the form, whether the call succeeded or failed
-          fieldset.disabled = false;
-        } // update local `greeting` variable to match persisted value
+                  fieldset.disabled = true;
+                  _context.prev = 4;
+                  _context.next = 7;
+                  return window.contract.set_greeting({
+                    // pass the value that the user entered in the greeting field
+                    message: newGreeting
+                  });
 
+                case 7:
+                  _context.next = 13;
+                  break;
 
-        set_greeting(newGreeting); // show Notification
+                case 9:
+                  _context.prev = 9;
+                  _context.t0 = _context["catch"](4);
+                  alert('Something went wrong! ' + 'Maybe you need to sign out and back in? ' + 'Check your browser console for more info.');
+                  throw _context.t0;
 
-        setShowNotification(true); // remove Notification again after css animation completes
-        // this allows it to be shown again next time the form is submitted
+                case 13:
+                  _context.prev = 13;
+                  // re-enable the form, whether the call succeeded or failed
+                  fieldset.disabled = false;
+                  return _context.finish(13);
 
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 11000);
-      }
+                case 16:
+                  // update local `greeting` variable to match persisted value
+                  set_greeting(newGreeting); // show Notification
+
+                  setShowNotification(true); // remove Notification again after css animation completes
+                  // this allows it to be shown again next time the form is submitted
+
+                  setTimeout(function () {
+                    setShowNotification(false);
+                  }, 11000);
+
+                case 19:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[4, 9, 13, 16]]);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }()
     }, /*#__PURE__*/_react.default.createElement("fieldset", {
       id: "fieldset"
     }, /*#__PURE__*/_react.default.createElement("label", {
@@ -47101,7 +47180,9 @@ function App() {
       autoComplete: "off",
       defaultValue: greeting,
       id: "greeting",
-      onChange: e => setButtonDisabled(e.target.value === greeting),
+      onChange: function onChange(e) {
+        return setButtonDisabled(e.target.value === greeting);
+      },
       style: {
         flex: 1
       }
@@ -47128,17 +47209,17 @@ function App() {
 
 
 function Notification() {
-  const urlPrefix = `https://explorer.${networkId}.near.org/accounts`;
+  var urlPrefix = "https://explorer.".concat(networkId, ".near.org/accounts");
   return /*#__PURE__*/_react.default.createElement("aside", null, /*#__PURE__*/_react.default.createElement("a", {
     target: "_blank",
     rel: "noreferrer",
-    href: `${urlPrefix}/${window.accountId}`
+    href: "".concat(urlPrefix, "/").concat(window.accountId)
   }, window.accountId), ' '
   /* React trims whitespace around tags; insert literal space character when needed */
   , "called method: 'set_greeting' in contract:", ' ', /*#__PURE__*/_react.default.createElement("a", {
     target: "_blank",
     rel: "noreferrer",
-    href: `${urlPrefix}/${window.contract.contractId}`
+    href: "".concat(urlPrefix, "/").concat(window.contract.contractId)
   }, window.contract.contractId), /*#__PURE__*/_react.default.createElement("footer", null, /*#__PURE__*/_react.default.createElement("div", null, "\u2714 Succeeded"), /*#__PURE__*/_react.default.createElement("div", null, "Just now")));
 }
 },{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","react":"../node_modules/react/index.js","./utils":"utils.js","./global.css":"global.css","./config":"config.js"}],"index.js":[function(require,module,exports) {
@@ -47185,7 +47266,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61523" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64344" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
